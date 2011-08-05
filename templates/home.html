@@ -1,0 +1,65 @@
+{% load php %}<!DOCTYPE HTML>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="utf-8">
+    <title>django-php</title>
+    <style>
+        body {
+            background: #fff;
+            color: #333;
+            font: 16px/24px 'Trebuchet MS', sans-serif;
+            margin: 1em;
+        }
+
+        p, ul, ol {
+            float: left;
+            margin: 0 2em;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        a {
+            color: #09f;
+        }
+    </style>
+</head>
+<body>
+    <p>loop:</p>
+    <ul>
+    {% php for ($i = 0; $i < 8; ++$i) { %}
+        <li>item #{% php echo $i; %}</li>
+    {% php } %}
+    </ul>
+
+    <p>permutations:</p>
+    <ol>
+    {% startphp %}
+        function mutate($str, $i, $j) {
+            $c = $str[$i];
+            $str[$i] = $str[$j];
+            $str[$j] = $c;
+            return $str;
+        }
+
+        function perm($str, $i, $n) {
+            if ($i == $n) {
+                print "<li>$str</li>\n";
+            }
+            else {
+                for ($j = $i; $j < $n; ++$j) {
+                    perm(mutate($str, $i, $j), $i + 1, $n);
+                }
+            }
+        }
+
+        $str = '{{ str }}';
+        perm($str, 0, strlen($str));
+    {% endphp %}
+    </ol>
+
+    <p><a href="{% url phpinfo %}">phpinfo</a></p>
+</body>
+</html>
